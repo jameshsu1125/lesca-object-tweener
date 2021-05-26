@@ -1,6 +1,6 @@
 {
 	"name": "lesca-object-tweener",
-	"version": "1.0.2",
+	"version": "1.0.4",
 	"description": "tween object value",
 	"main": "lib/index.js",
 	"scripts": {
@@ -28,7 +28,6 @@
 		"animation-frame-delta": "^2.7.7",
 		"autoprefixer": "^10.0.2",
 		"babel-loader": "^8.0.0-beta.0",
-		"bezier-easing": "^2.1.0",
 		"concurrently": "^5.3.0",
 		"css-loader": "^1.0.0",
 		"file-loader": "^6.2.0",
@@ -50,5 +49,8 @@
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:jameshsu1125/lesca-object-tweener.git"
+	},
+	"dependencies": {
+		"bezier-easing": "^2.1.0"
 	}
 }
