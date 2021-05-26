@@ -3,21 +3,54 @@
 # Installation
 
 ```sh
-$ npm install <package> --save
+$ npm install lesca-object-tweener --save
 ```
 
 # Usage
 
 ```javascript
-import foo from 'foo';
+import Tween, { Bezier } from 'lesca-object-tweener';
+
+const tween = new Tweener({
+	from: { top: 0, left: 0 },
+	to: { top: 500, left: 500 },
+	duration: 1000,
+	delay: 1000,
+	easing: Bezier.linear,
+	onUpdate: (e) => console.log(e),
+	onCompelete: (e) => console.log(e),
+});
+
+tween.add({
+	to: { top: 1000 },
+	duration: 1000,
+	delay: 1000,
+	easing: Bezier.easeInOutQuint,
+	onUpdate: (e) => console.log(e),
+	onCompelete: (e) => console.log(e),
+});
 ```
 
-# Methods
+# reference about Cubic-Bezire
 
-| method | options | description | default |
-| :----- | :-----: | :---------: | ------: |
+[css-cubic-bezier-generator](https://www.cssportal.com/css-cubic-bezier-generator/)
 
 # Properties
 
-| Properties | type | description | default |
-| :--------- | :--: | :---------: | ------: |
+| Properties              | options  |      description      |      default |
+| :---------------------- | :------: | :-------------------: | -----------: |
+| new Tweener({ params }) |  params  |   new Tweener class   |              |
+| params.from             |  object  | object value = number |              |
+| params.to               |  object  | object value = number |              |
+| params.duration         |  number  |    tween duration     |         1000 |
+| params.delay            |  number  |      tween delay      |            0 |
+| params.easing           |  array   | cubic-bezier 4 values | easeOutQuart |
+| params.onUpdate         | function |     call by frame     |         void |
+| params.onCompelete      | function |     call when end     |         void |
+
+# Methods
+
+| Methods     | options | description |     default |
+| :---------- | :-----: | :---------: | ----------: |
+| add(params) | params  | same as new | same as new |
+| stop        |         |    stop     |             |
