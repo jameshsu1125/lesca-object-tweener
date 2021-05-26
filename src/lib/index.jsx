@@ -10,23 +10,31 @@ export default class Tweener {
 		onUpdate = void 0,
 		onCompelete = void 0,
 	}) {
-		this.data = [];
-		this.data.push({ from, to, duration, delay, easing, onUpdate, onCompelete });
-		this.result = {};
-		this.play();
 		this.enable = true;
+		this.data = [{ from, to, duration, delay, easing, onUpdate, onCompelete }];
+		this.result = {};
 
+		this.play();
 		return this;
 	}
 
-	add({ to, duration = 1000, delay = 0, easing = Bezier.easeOutQuart, onUpdate = void 0, onCompelete = void 0 }) {
+	add({
+		to,
+		duration = 1000,
+		delay = 0,
+		easing = Bezier.easeOutQuart,
+		onUpdate = void 0,
+		onCompelete = void 0,
+	}) {
 		this.data.push({ to, duration, delay, easing, onUpdate, onCompelete });
 	}
 
 	play() {
 		const { requestAnimationFrame } = window;
+
 		this.enable = true;
 		this.timestamp = new Date().getTime();
+
 		requestAnimationFrame(() => this.render());
 	}
 
@@ -37,21 +45,25 @@ export default class Tweener {
 	render() {
 		const { requestAnimationFrame } = window;
 
-		const time = new Date().getTime() - this.timestamp;
+		// get data form class
 		const [data] = this.data;
 		const { from, to, duration, delay, easing, onUpdate, onCompelete } = data;
+
+		// calc easing time
+		const time = new Date().getTime() - this.timestamp;
 		const currentTime = time - delay;
 		const [x1, y1, x2, y2] = easing;
 		const cubicBezier = BezierEasing(x1, y1, x2, y2);
 		const timePercent = currentTime / duration;
 
+		// wait for delay
 		if (currentTime < 0) {
 			requestAnimationFrame(() => this.render());
 			return;
 		}
 
+		// get value by easing time
 		let result = {};
-
 		Object.entries(to).forEach((e) => {
 			const [key, value] = e;
 			const fromValue = from[key];
@@ -61,13 +73,17 @@ export default class Tweener {
 		});
 
 		if (currentTime < duration) {
+			// keep render
 			onUpdate(result);
 			if (this.enable) requestAnimationFrame(() => this.render());
 		} else {
+			// complete and save result
 			this.result = { ...from, ...result };
+			// remove queue
 			this.data.shift();
 			onCompelete(to);
 
+			// check data. run next queue when data still has one
 			if (this.data.length > 0) {
 				this.reset();
 				this.data[0].from = this.result;
@@ -81,8 +97,8 @@ export default class Tweener {
 	}
 }
 
-// check it also => https://www.cssportal.com/css-cubic-bezier-generator/
 export const Bezier = {
+	// basic
 	linear: [0, 0, 1, 1],
 	'ease-in': [0.42, 0, 1, 1],
 	'ease-out': [0, 0, 0.58, 1],
