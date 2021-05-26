@@ -55,11 +55,16 @@ const defaultOptions = {
 	delay: 0,
 	easing: Bezier.easeOutQuart,
 	onUpdate: void 0,
-	onCompelete: void 0,
+	onComplete: void 0,
 	onStart: void 0,
 };
 
 export default class Tweener {
+	/**
+	 * { from, to, duration, delay, easing, onUpdate, onComplete, onStart }
+	 * @param {object} options { from, to, duration, delay, easing, onUpdate, onComplete, onStart }
+	 * @returns
+	 */
 	constructor(options = defaultOptions) {
 		this.enable = true;
 		this.data = [];
@@ -80,10 +85,10 @@ export default class Tweener {
 		delay = 0,
 		easing = Bezier.easeOutQuart,
 		onUpdate = void 0,
-		onCompelete = void 0,
+		onComplete = void 0,
 		onStart = void 0,
 	}) {
-		this.data.push({ from, to, duration, delay, easing, onUpdate, onCompelete, onStart });
+		this.data.push({ from, to, duration, delay, easing, onUpdate, onComplete, onStart });
 	}
 
 	play() {
@@ -106,7 +111,7 @@ export default class Tweener {
 
 		// get data form class
 		const [data] = this.data;
-		const { from, to, duration, delay, easing, onUpdate, onCompelete } = data;
+		const { from, to, duration, delay, easing, onUpdate, onComplete } = data;
 
 		// calc easing time
 		const time = new Date().getTime() - this.timestamp;
@@ -140,7 +145,7 @@ export default class Tweener {
 			this.result = { ...from, ...result };
 			// remove queue
 			this.data.shift();
-			onCompelete?.(to);
+			onComplete?.(to);
 
 			// check data. run next queue when data still has one
 			if (this.data.length > 0) {

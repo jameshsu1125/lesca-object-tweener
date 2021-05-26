@@ -18,7 +18,7 @@ const tweener = new Tweener({
 	delay: 1000,
 	easing: Bezier.linear,
 	onUpdate: (e) => console.log(e),
-	onCompelete: (e) => console.log(e),
+	onComplete: (e) => console.log(e),
 });
 
 tweener.add({
@@ -27,7 +27,7 @@ tweener.add({
 	delay: 1000,
 	easing: Bezier.easeInOutQuint,
 	onUpdate: (e) => console.log(e),
-	onCompelete: (e) => console.log(e),
+	onComplete: (e) => console.log(e),
 	onStart: () => {
 		alert('start');
 	},
@@ -49,7 +49,7 @@ tweener.add({
 | params.delay            |  number  |      tween delay      |            0 |
 | params.easing           |  array   | cubic-bezier 4 values | easeOutQuart |
 | params.onUpdate         | function |     call by frame     |         void |
-| params.onCompelete      | function |     call when end     |         void |
+| params.onComplete       | function |     call when end     |         void |
 | params.onStart          | function |    call when start    |         void |
 
 # Methods
