@@ -23,6 +23,9 @@ const tween = new Tweener({
 	easing: Bezier.linear,
 	duration: 1000,
 	delay: 1000,
+	onStart: () => {
+		console.log('start');
+	},
 	onUpdate: (e) => onUpdate(e),
 	onCompelete: (e) => onUpdate(e),
 });
@@ -32,6 +35,9 @@ tween.add({
 	easing: Bezier.easeInOutQuint,
 	duration: 1000,
 	delay: 1000,
+	onStart: () => {
+		console.log('start2');
+	},
 	onUpdate: (e) => onUpdate(e),
 	onCompelete: (e) => onUpdate(e),
 });

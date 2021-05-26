@@ -1,6 +1,6 @@
 {
 	"name": "lesca-object-tweener",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "tween object value",
 	"main": "lib/index.js",
 	"scripts": {

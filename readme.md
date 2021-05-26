@@ -28,6 +28,9 @@ tweener.add({
 	easing: Bezier.easeInOutQuint,
 	onUpdate: (e) => console.log(e),
 	onCompelete: (e) => console.log(e),
+	onStart: () => {
+		alert('start');
+	},
 });
 ```
 
@@ -47,6 +50,7 @@ tweener.add({
 | params.easing           |  array   | cubic-bezier 4 values | easeOutQuart |
 | params.onUpdate         | function |     call by frame     |         void |
 | params.onCompelete      | function |     call when end     |         void |
+| params.onStart          | function |    call when start    |         void |
 
 # Methods
 

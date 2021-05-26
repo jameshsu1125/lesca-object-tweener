@@ -56,6 +56,7 @@ const defaultOptions = {
 	easing: Bezier.easeOutQuart,
 	onUpdate: void 0,
 	onCompelete: void 0,
+	onStart: void 0,
 };
 
 export default class Tweener {
@@ -80,15 +81,18 @@ export default class Tweener {
 		easing = Bezier.easeOutQuart,
 		onUpdate = void 0,
 		onCompelete = void 0,
+		onStart = void 0,
 	}) {
-		this.data.push({ from, to, duration, delay, easing, onUpdate, onCompelete });
+		this.data.push({ from, to, duration, delay, easing, onUpdate, onCompelete, onStart });
 	}
 
 	play() {
 		const { requestAnimationFrame } = window;
-		console.log('aaa');
 		this.enable = true;
 		this.timestamp = new Date().getTime();
+
+		const [data] = this.data;
+		data.onStart?.();
 
 		requestAnimationFrame(() => this.render());
 	}
@@ -129,19 +133,20 @@ export default class Tweener {
 
 		if (currentTime < duration) {
 			// keep render
-			onUpdate(result);
+			onUpdate?.(result);
 			if (this.enable) requestAnimationFrame(() => this.render());
 		} else {
 			// complete and save result
 			this.result = { ...from, ...result };
 			// remove queue
 			this.data.shift();
-			onCompelete(to);
+			onCompelete?.(to);
 
 			// check data. run next queue when data still has one
 			if (this.data.length > 0) {
 				this.reset();
 				this.data[0].from = this.result;
+				this.data[0].onStart?.();
 				if (this.enable) requestAnimationFrame(() => this.render());
 			}
 		}
