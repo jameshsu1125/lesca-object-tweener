@@ -9,9 +9,9 @@ $ npm install lesca-object-tweener --save
 # Usage
 
 ```javascript
-import Tween, { Bezier } from 'lesca-object-tweener';
+import Tweener, { Bezier } from 'lesca-object-tweener';
 
-const tween = new Tweener({
+const tweener = new Tweener({
 	from: { top: 0, left: 0 },
 	to: { top: 500, left: 500 },
 	duration: 1000,
@@ -21,7 +21,7 @@ const tween = new Tweener({
 	onCompelete: (e) => console.log(e),
 });
 
-tween.add({
+tweener.add({
 	to: { top: 1000 },
 	duration: 1000,
 	delay: 1000,
