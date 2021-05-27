@@ -50,7 +50,7 @@ const tweener = new Tweener();
 		onComplete: (e) => console.log(e), // { top:100 }
 	});
 });
-tweener.play(); // need run play when new constructor without any params
+tweener.play(); // Need to run play when new constructor without any params
 ```
 
 # Properties
