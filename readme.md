@@ -34,13 +34,6 @@ tweener.add({
 });
 ```
 
-# references
-
-[css-cubic-bezier-generator](https://www.cssportal.com/css-cubic-bezier-generator/)
-
-[bezier-easing](https://www.npmjs.com/package/bezier-easing)
-
-
 # Properties
 
 | Properties              | options  |      description      |      default |
@@ -61,3 +54,10 @@ tweener.add({
 | :---------- | :-----: | :---------: | ----------: |
 | add(params) | params  | same as new | same as new |
 | stop        |         |    stop     |             |
+
+
+# references
+
+[css-cubic-bezier-generator](https://www.cssportal.com/css-cubic-bezier-generator/)
+
+[bezier-easing](https://www.npmjs.com/package/bezier-easing)
