@@ -34,11 +34,9 @@ tweener.add({
 });
 ```
 
-# reference about Cubic-Bezire
+# references
 
 [css-cubic-bezier-generator](https://www.cssportal.com/css-cubic-bezier-generator/)
-
-# transition-timing-function js
 [bezier-easing](https://www.npmjs.com/package/bezier-easing)
 
 
