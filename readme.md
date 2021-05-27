@@ -37,6 +37,7 @@ tweener.add({
 # references
 
 [css-cubic-bezier-generator](https://www.cssportal.com/css-cubic-bezier-generator/)
+
 [bezier-easing](https://www.npmjs.com/package/bezier-easing)
 
 
