@@ -17,8 +17,8 @@ const tweener = new Tweener({
 	duration: 1000,
 	delay: 1000,
 	easing: Bezier.linear,
-	onUpdate: (e) => console.log(e),
-	onComplete: (e) => console.log(e),
+	onUpdate: (e) => console.log(e), // {top:0~500, left:0~500}
+	onComplete: (e) => console.log(e), // { top: 500, left: 500 }
 });
 
 tweener.add({
