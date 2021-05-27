@@ -11,6 +11,7 @@ $ npm install lesca-object-tweener --save
 ```javascript
 import Tweener, { Bezier } from 'lesca-object-tweener';
 
+// use single tween
 const tweener = new Tweener({
 	from: { top: 0, left: 0 },
 	to: { top: 500, left: 500 },
@@ -26,12 +27,30 @@ tweener.add({
 	duration: 1000,
 	delay: 1000,
 	easing: Bezier.easeInOutQuint,
-	onUpdate: (e) => console.log(e),
-	onComplete: (e) => console.log(e),
-	onStart: () => {
-		alert('start');
-	},
+	onStart: () => alert('start'),
+	onUpdate: (e) => console.log(e), // {top:0~1000, left:500}
+	onComplete: (e) => console.log(e), // {top:1000, left:500}
 });
+```
+
+```javascript
+// use multiple tween
+const tweener = new Tweener();
+
+[
+	{ top: 0, left: 0 },
+	{ top: 100, left: 100 },
+].forEach((data) => {
+	tweener.add({
+		from: { top: 0 }, // first loop will add "from". Second time tweener will ignore "from"
+		to: { top: 100 },
+		duration: 0,
+		easing: Bezier.easeInOutQuint,
+		onUpdate: (e) => console.log(e), // { top:0~100 }
+		onComplete: (e) => console.log(e), // { top:100 }
+	});
+});
+tweener.play(); // need run play when new constructor without any params
 ```
 
 # Properties
@@ -54,7 +73,6 @@ tweener.add({
 | :---------- | :-----: | :---------: | ----------: |
 | add(params) | params  | same as new | same as new |
 | stop        |         |    stop     |             |
-
 
 # references
 

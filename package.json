@@ -1,7 +1,7 @@
 {
 	"name": "lesca-object-tweener",
 	"version": "1.0.6",
-	"description": "tween object value",
+	"description": "Simply tween the value of object.",
 	"main": "lib/index.js",
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
@@ -15,7 +15,9 @@
 	"keywords": [
 		"lesca",
 		"衝康吉",
-		"jameshsu1125"
+		"jameshsu1125",
+		"Tween",
+		"Object"
 	],
 	"license": "MIT",
 	"devDependencies": {
