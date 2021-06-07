@@ -89,6 +89,7 @@ export default class Tweener {
 		onStart = void 0,
 	}) {
 		this.data.push({ from, to, duration, delay, easing, onUpdate, onComplete, onStart });
+		return this;
 	}
 
 	play() {
