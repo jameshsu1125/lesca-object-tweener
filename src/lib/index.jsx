@@ -69,6 +69,7 @@ export default class Tweener {
 		this.enable = true;
 		this.data = [];
 		this.result = {};
+		this.playing = false;
 
 		if (options !== defaultOptions) {
 			this.data.push(options);
@@ -94,6 +95,9 @@ export default class Tweener {
 
 	play() {
 		const { requestAnimationFrame } = window;
+		if (this.playing) return;
+		this.playing = true;
+
 		this.enable = true;
 		this.timestamp = new Date().getTime();
 
@@ -154,6 +158,8 @@ export default class Tweener {
 				this.data[0].from = this.result;
 				this.data[0].onStart?.();
 				if (this.enable) requestAnimationFrame(() => this.render());
+			} else {
+				this.playing = false;
 			}
 		}
 	}
