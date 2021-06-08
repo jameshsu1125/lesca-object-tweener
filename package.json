@@ -1,6 +1,6 @@
 {
 	"name": "lesca-object-tweener",
-	"version": "1.0.8",
+	"version": "1.0.10",
 	"description": "Simply tween the value of object.",
 	"main": "lib/index.js",
 	"scripts": {

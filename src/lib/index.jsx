@@ -109,6 +109,7 @@ export default class Tweener {
 
 	stop() {
 		this.enable = false;
+		this.playing = false;
 	}
 
 	render() {
