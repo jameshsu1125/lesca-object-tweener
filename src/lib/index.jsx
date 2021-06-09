@@ -93,6 +93,11 @@ export default class Tweener {
 		return this;
 	}
 
+	clearQueue() {
+		this.data = [];
+		return this;
+	}
+
 	play() {
 		const { requestAnimationFrame } = window;
 		if (this.playing) return;
@@ -110,6 +115,7 @@ export default class Tweener {
 	stop() {
 		this.enable = false;
 		this.playing = false;
+		return this;
 	}
 
 	render() {
