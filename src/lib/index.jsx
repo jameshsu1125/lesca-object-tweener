@@ -70,6 +70,9 @@ export default class Tweener {
 		this.data = [];
 		this.result = {};
 		this.playing = false;
+		this.clearNextFrame = false;
+		this.playNextFrame = false;
+		this.addDataNextFrame = [];
 
 		if (options !== defaultOptions) {
 			this.data.push(options);
@@ -89,17 +92,27 @@ export default class Tweener {
 		onComplete = void 0,
 		onStart = void 0,
 	}) {
-		this.data.push({ from, to, duration, delay, easing, onUpdate, onComplete, onStart });
+		const data = { from, to, duration, delay, easing, onUpdate, onComplete, onStart };
+		if (this.clearNextFrame) {
+			this.addDataNextFrame.push(data);
+		}
+		this.data.push(data);
 		return this;
 	}
 
 	clearQueue() {
-		this.data = [];
+		this.clearNextFrame = true;
 		return this;
 	}
 
 	play() {
 		const { requestAnimationFrame } = window;
+
+		if (this.clearNextFrame) {
+			this.playNextFrame = true;
+			return;
+		}
+
 		if (this.playing) return;
 		this.playing = true;
 
@@ -123,7 +136,10 @@ export default class Tweener {
 
 		// get data form class
 		const [data] = this.data;
-		const { from, to, duration, delay, easing, onUpdate, onComplete } = data;
+		if (!data) return;
+		const { from: nfrom, to, duration, delay, easing, onUpdate, onComplete } = data;
+
+		const from = nfrom || this.result;
 
 		// calc easing time
 		const time = new Date().getTime() - this.timestamp;
@@ -151,7 +167,23 @@ export default class Tweener {
 		if (currentTime < duration) {
 			// keep render
 			onUpdate?.(result);
-			if (this.enable) requestAnimationFrame(() => this.render());
+			if (this.enable) {
+				requestAnimationFrame(() => this.render());
+			} else {
+				// force stop
+				this.result = { ...from, ...result };
+				if (this.clearNextFrame) {
+					this.clearNextFrame = false;
+					if (this.addDataNextFrame.length > 0) {
+						this.data = [...this.addDataNextFrame];
+						this.addDataNextFrame = [];
+					} else this.data = [];
+				}
+				if (this.playNextFrame) {
+					this.playNextFrame = false;
+					this.play();
+				}
+			}
 		} else {
 			// complete and save result
 			this.result = { ...from, ...result };

@@ -31,7 +31,7 @@ const tween = new Tweener({
 });
 
 tween.add({
-	to: { left: 0, top: 0 },
+	to: { left: 250, top: 250 },
 	easing: Bezier.easeInOutQuint,
 	duration: 1000,
 	delay: 1000,
@@ -45,6 +45,24 @@ tween.add({
 const stop = () => {
 	tween.stop();
 };
+
+setTimeout(() => {
+	tween
+		.stop()
+		.clearQueue()
+		.add({
+			to: { left: 0, top: 0 },
+			easing: Bezier.easeInOutQuint,
+			duration: 1000,
+			delay: 1000,
+			onStart: () => {
+				console.log('start3');
+			},
+			onUpdate: (e) => onUpdate(e),
+			onCompelete: (e) => onUpdate(e),
+		})
+		.play();
+}, 1500);
 
 function Demo() {
 	return (
