@@ -101,7 +101,7 @@ export default class Tweener {
 	}
 
 	clearQueue() {
-		this.clearNextFrame = true;
+		if (this.data.length > 0) this.clearNextFrame = true;
 		return this;
 	}
 
