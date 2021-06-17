@@ -139,7 +139,7 @@ export default class Tweener {
 		if (!data) return;
 		const { from: nfrom, to, duration, delay, easing, onUpdate, onComplete } = data;
 
-		const from = nfrom || this.result;
+		const from = nfrom || { ...this.result };
 
 		// calc easing time
 		const time = new Date().getTime() - this.timestamp;
@@ -194,7 +194,7 @@ export default class Tweener {
 			// check data. run next queue when data still has one
 			if (this.data.length > 0) {
 				this.reset();
-				this.data[0].from = this.result;
+				this.data[0].from = this.data[0].from || this.result;
 				this.data[0].onStart?.();
 				if (this.enable) requestAnimationFrame(() => this.render());
 			} else {
