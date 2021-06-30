@@ -108,6 +108,9 @@ export default class Tweener {
 	play() {
 		const { requestAnimationFrame } = window;
 
+		const [data] = this.data;
+		if (!data) return;
+
 		if (this.clearNextFrame) {
 			this.playNextFrame = true;
 			return;
@@ -119,7 +122,6 @@ export default class Tweener {
 		this.enable = true;
 		this.timestamp = new Date().getTime();
 
-		const [data] = this.data;
 		data.onStart?.();
 
 		requestAnimationFrame(() => this.render());
