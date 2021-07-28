@@ -56,7 +56,7 @@ const defaultOptions = {
 	easing: Bezier.easeOutQuart,
 	onUpdate: void 0,
 	onComplete: void 0,
-	onStart: void 0,
+	onStart: { method: () => {}, is: false },
 };
 
 export default class Tweener {
@@ -74,8 +74,9 @@ export default class Tweener {
 		this.playNextFrame = false;
 		this.addDataNextFrame = [];
 
-		if (options !== defaultOptions) {
-			this.data.push(options);
+		if (JSON.stringify(options) !== JSON.stringify(defaultOptions)) {
+			const onStart = { method: options.onStart, is: false };
+			this.data.push({ ...options, onStart });
 			this.play();
 		}
 
@@ -90,9 +91,18 @@ export default class Tweener {
 		easing = Bezier.easeOutQuart,
 		onUpdate = void 0,
 		onComplete = void 0,
-		onStart = void 0,
+		onStart = {},
 	}) {
-		const data = { from, to, duration, delay, easing, onUpdate, onComplete, onStart };
+		const data = {
+			from,
+			to,
+			duration,
+			delay,
+			easing,
+			onUpdate,
+			onComplete,
+			onStart: { method: onStart, is: false },
+		};
 		if (this.clearNextFrame) {
 			this.addDataNextFrame.push(data);
 		}
@@ -122,8 +132,6 @@ export default class Tweener {
 		this.enable = true;
 		this.timestamp = new Date().getTime();
 
-		data.onStart?.();
-
 		requestAnimationFrame(() => this.render());
 	}
 
@@ -139,7 +147,7 @@ export default class Tweener {
 		// get data form class
 		const [data] = this.data;
 		if (!data) return;
-		const { from: nfrom, to, duration, delay, easing, onUpdate, onComplete } = data;
+		const { from: nfrom, to, duration, delay, easing, onUpdate, onComplete, onStart } = data;
 
 		const from = nfrom || { ...this.result };
 
@@ -154,6 +162,15 @@ export default class Tweener {
 		if (currentTime < 0) {
 			requestAnimationFrame(() => this.render());
 			return;
+		}
+
+		// onStart
+		if (Object.keys(onStart).length !== 0) {
+			const { method, is } = onStart;
+			if (!is) {
+				onStart.is = true;
+				method?.();
+			}
 		}
 
 		// get value by easing time
@@ -197,7 +214,7 @@ export default class Tweener {
 			if (this.data.length > 0) {
 				this.reset();
 				this.data[0].from = this.data[0].from || this.result;
-				this.data[0].onStart?.();
+				// this.data[0].onStart?.();
 				if (this.enable) requestAnimationFrame(() => this.render());
 			} else {
 				this.playing = false;

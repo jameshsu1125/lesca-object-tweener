@@ -62,7 +62,7 @@ setTimeout(() => {
 			onCompelete: (e) => onUpdate(e),
 		})
 		.play();
-}, 1500);
+}, 5500);
 
 function Demo() {
 	return (
