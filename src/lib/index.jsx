@@ -59,6 +59,17 @@ const defaultOptions = {
 	onStart: { method: () => {}, is: false },
 };
 
+const defaultAddOptions = {
+	from: false,
+	to: false,
+	duration: 1000,
+	delay: 0,
+	easing: Bezier.easeOutQuart,
+	onUpdate: void 0,
+	onComplete: void 0,
+	onStart: false,
+};
+
 export default class Tweener {
 	/**
 	 * { from, to, duration, delay, easing, onUpdate, onComplete, onStart }
@@ -66,6 +77,8 @@ export default class Tweener {
 	 * @returns
 	 */
 	constructor(options = defaultOptions) {
+		const opt = { ...defaultOptions, ...options };
+
 		this.enable = true;
 		this.data = [];
 		this.result = {};
@@ -74,7 +87,7 @@ export default class Tweener {
 		this.playNextFrame = false;
 		this.addDataNextFrame = [];
 
-		if (JSON.stringify(options) !== JSON.stringify(defaultOptions)) {
+		if (JSON.stringify(opt) !== JSON.stringify(defaultOptions)) {
 			const method = options.onStart || function () {};
 			const onStart = { method, is: false };
 			this.data.push({ ...options, onStart });
@@ -84,16 +97,10 @@ export default class Tweener {
 		return this;
 	}
 
-	add({
-		from,
-		to,
-		duration = 1000,
-		delay = 0,
-		easing = Bezier.easeOutQuart,
-		onUpdate = void 0,
-		onComplete = void 0,
-		onStart = false,
-	}) {
+	add(options = defaultAddOptions) {
+		const opt = { ...defaultAddOptions, ...options };
+		const { from, to, duration, delay, easing, onUpdate, onComplete, onStart } = opt;
+
 		const data = {
 			from,
 			to,
