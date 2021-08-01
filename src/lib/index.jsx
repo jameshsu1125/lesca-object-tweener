@@ -54,8 +54,8 @@ const defaultOptions = {
 	duration: 1000,
 	delay: 0,
 	easing: Bezier.easeOutQuart,
-	onUpdate: () => {},
-	onComplete: () => {},
+	onUpdate: void 0,
+	onComplete: void 0,
 	onStart: { method: () => {}, is: false },
 };
 
@@ -65,8 +65,8 @@ const defaultAddOptions = {
 	duration: 1000,
 	delay: 0,
 	easing: Bezier.easeOutQuart,
-	onUpdate: () => {},
-	onComplete: () => {},
+	onUpdate: void 0,
+	onComplete: void 0,
 	onStart: false,
 };
 
