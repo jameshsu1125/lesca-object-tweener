@@ -22,9 +22,6 @@ const tween = new Tweener({
 	to: { top: 500, left: 500 },
 	duration: 1000,
 	delay: 1000,
-	onStart: () => {
-		console.log('start1');
-	},
 	onUpdate: (e) => onUpdate(e),
 	onComplete: (e) => onUpdate(e),
 });

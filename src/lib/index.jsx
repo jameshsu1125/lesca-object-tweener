@@ -56,17 +56,6 @@ const defaultOptions = {
 	easing: Bezier.easeOutQuart,
 	onUpdate: void 0,
 	onComplete: void 0,
-	onStart: { method: () => {}, is: false },
-};
-
-const defaultAddOptions = {
-	from: false,
-	to: false,
-	duration: 1000,
-	delay: 0,
-	easing: Bezier.easeOutQuart,
-	onUpdate: void 0,
-	onComplete: void 0,
 	onStart: false,
 };
 
@@ -97,8 +86,8 @@ export default class Tweener {
 		return this;
 	}
 
-	add(options = defaultAddOptions) {
-		const opt = { ...defaultAddOptions, ...options };
+	add(options = defaultOptions) {
+		const opt = { ...defaultOptions, ...options };
 		const { from, to, duration, delay, easing, onUpdate, onComplete, onStart } = opt;
 
 		const data = {
@@ -178,7 +167,9 @@ export default class Tweener {
 
 		// onStart
 		if (Object.keys(onStart).length !== 0) {
+			console.log(onStart);
 			const { method, is } = onStart;
+			console.log(typeof method);
 			if (!is && method) {
 				onStart.is = true;
 				method?.();
