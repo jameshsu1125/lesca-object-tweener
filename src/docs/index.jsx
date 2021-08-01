@@ -20,14 +20,13 @@ const onUpdate = (data) => {
 const tween = new Tweener({
 	from: { top: 0, left: 0 },
 	to: { top: 500, left: 500 },
-	easing: Bezier.linear,
 	duration: 1000,
 	delay: 1000,
 	onStart: () => {
 		console.log('start1');
 	},
 	onUpdate: (e) => onUpdate(e),
-	onCompelete: (e) => onUpdate(e),
+	onComplete: (e) => onUpdate(e),
 });
 
 tween.add({
@@ -39,7 +38,7 @@ tween.add({
 		console.log('start2');
 	},
 	onUpdate: (e) => onUpdate(e),
-	onCompelete: (e) => onUpdate(e),
+	onComplete: (e) => onUpdate(e),
 });
 
 const stop = () => {
@@ -59,7 +58,7 @@ setTimeout(() => {
 				console.log('start3');
 			},
 			onUpdate: (e) => onUpdate(e),
-			onCompelete: (e) => onUpdate(e),
+			onComplete: (e) => onUpdate(e),
 		})
 		.play();
 }, 5500);

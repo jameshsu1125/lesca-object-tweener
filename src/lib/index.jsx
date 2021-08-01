@@ -54,8 +54,8 @@ const defaultOptions = {
 	duration: 1000,
 	delay: 0,
 	easing: Bezier.easeOutQuart,
-	onUpdate: void 0,
-	onComplete: void 0,
+	onUpdate: () => {},
+	onComplete: () => {},
 	onStart: { method: () => {}, is: false },
 };
 
@@ -65,8 +65,8 @@ const defaultAddOptions = {
 	duration: 1000,
 	delay: 0,
 	easing: Bezier.easeOutQuart,
-	onUpdate: void 0,
-	onComplete: void 0,
+	onUpdate: () => {},
+	onComplete: () => {},
 	onStart: false,
 };
 
@@ -88,9 +88,9 @@ export default class Tweener {
 		this.addDataNextFrame = [];
 
 		if (JSON.stringify(opt) !== JSON.stringify(defaultOptions)) {
-			const method = options.onStart || function () {};
+			const method = opt.onStart || function () {};
 			const onStart = { method, is: false };
-			this.data.push({ ...options, onStart });
+			this.data.push({ ...opt, onStart });
 			this.play();
 		}
 
