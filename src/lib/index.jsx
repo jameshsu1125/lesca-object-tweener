@@ -167,9 +167,7 @@ export default class Tweener {
 
 		// onStart
 		if (Object.keys(onStart).length !== 0) {
-			console.log(onStart);
 			const { method, is } = onStart;
-			console.log(typeof method);
 			if (!is && method) {
 				onStart.is = true;
 				method?.();
