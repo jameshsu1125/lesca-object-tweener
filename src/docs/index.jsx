@@ -24,7 +24,7 @@ const tween = new Tweener({
 	delay: 1000,
 	onUpdate: (e) => onUpdate(e),
 	onComplete: (e) => onUpdate(e),
-});
+}).play();
 
 tween.add({
 	to: { left: 250, top: 250 },

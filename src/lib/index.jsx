@@ -80,7 +80,6 @@ export default class Tweener {
 			const method = opt.onStart || function () {};
 			const onStart = { method, is: false };
 			this.data.push({ ...opt, onStart });
-			this.play();
 		}
 
 		return this;
@@ -134,6 +133,7 @@ export default class Tweener {
 		this.timestamp = new Date().getTime();
 
 		requestAnimationFrame(() => this.render());
+		return this;
 	}
 
 	stop() {

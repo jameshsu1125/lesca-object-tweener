@@ -20,7 +20,7 @@ const tweener = new Tweener({
 	easing: Bezier.linear,
 	onUpdate: (e) => console.log(e), // {top:0~500, left:0~500}
 	onComplete: (e) => console.log(e), // { top: 500, left: 500 }
-});
+}).play();
 
 tweener.add({
 	to: { top: 1000 },

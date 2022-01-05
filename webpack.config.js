@@ -14,7 +14,12 @@ module.exports = {
 			{ test: /\.less$/, use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader'] },
 			{
 				test: /\.(png|jpg|gif|svg)$/,
-				use: [{ loader: 'file-loader', options: { name: 'img/[path][name].[ext]', context: 'src/docs' } }],
+				use: [
+					{
+						loader: 'file-loader',
+						options: { name: 'img/[path][name].[ext]', context: 'src/docs' },
+					},
+				],
 			},
 		],
 	},
@@ -27,8 +32,6 @@ module.exports = {
 		extensions: ['.js', '.jsx'],
 	},
 	devServer: {
-		contentBase: path.join(__dirname, 'docs'),
 		port: 8000,
-		stats: 'minimal',
 	},
 };
