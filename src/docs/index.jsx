@@ -18,25 +18,22 @@ const onUpdate = (data) => {
 };
 
 const tween = new Tweener({
-	from: { top: 0, left: 0, width: 100 },
-	to: { top: 500, left: 500 },
-	duration: 1000,
-	delay: 1000,
-	onUpdate: (e) => onUpdate(e),
-	onComplete: (e) => onUpdate(e),
-}).play();
-
-tween.add({
-	to: { left: 250, top: 250, width: 200 },
-	easing: Bezier.easeInOutQuint,
-	duration: 1000,
-	delay: 1000,
-	onStart: () => {
-		console.log('start2');
-	},
-	onUpdate: (e) => onUpdate(e),
-	onComplete: (e) => onUpdate(e),
+	from: { top: 100, left: 0, width: 100 },
 });
+
+tween
+	.add({
+		to: { left: 250 },
+		easing: Bezier.easeInOutQuint,
+		duration: 1000,
+		delay: 1000,
+		onStart: () => {
+			console.log('start2');
+		},
+		onUpdate: (e) => onUpdate(e),
+		onComplete: (e) => onUpdate(e),
+	})
+	.play();
 
 const stop = () => {
 	tween.stop();
@@ -47,7 +44,7 @@ setTimeout(() => {
 		.stop()
 		.clearQueue()
 		.add({
-			to: { left: 0, top: 0 },
+			to: { width: 200 },
 			easing: Bezier.easeInOutQuint,
 			duration: 1000,
 			delay: 1000,

@@ -70,7 +70,6 @@ export default class Tweener {
 
 		this.enable = true;
 		this.data = [];
-		this.result = {};
 		this.playing = false;
 		this.clearNextFrame = false;
 		this.playNextFrame = false;
@@ -79,10 +78,10 @@ export default class Tweener {
 		if (JSON.stringify(opt) !== JSON.stringify(defaultOptions)) {
 			const method = opt.onStart || function () {};
 			const onStart = { method, is: false };
-			this.data.push({ ...opt, onStart });
+			if (opt.to) this.data.push({ ...opt, onStart });
 		}
 
-		this.defaultFrom = opt.from;
+		this.result = opt.from;
 
 		return this;
 	}
@@ -109,6 +108,7 @@ export default class Tweener {
 			this.addDataNextFrame.push(data);
 		}
 		this.data.push(data);
+
 		return this;
 	}
 
@@ -152,7 +152,7 @@ export default class Tweener {
 		if (!data) return;
 		const { from: nfrom, to, duration, delay, easing, onUpdate, onComplete, onStart } = data;
 
-		const from = nfrom || { ...this.result };
+		const from = nfrom || { ...this.defaultFrom, ...this.result };
 
 		// calc easing time
 		const time = new Date().getTime() - this.timestamp;
@@ -186,14 +186,15 @@ export default class Tweener {
 			result[key] = resultValue;
 		});
 
+		// console.log(from, to, result, this.result);
 		if (currentTime < duration) {
 			// keep render
-			onUpdate?.({ ...this.defaultFrom, ...result });
+			onUpdate?.({ ...this.result, ...result });
 			if (this.enable) {
 				requestAnimationFrame(() => this.render());
 			} else {
 				// force stop
-				this.result = { ...this.defaultFrom, ...from, ...result };
+				this.result = { ...this.result, ...result };
 				if (this.clearNextFrame) {
 					this.clearNextFrame = false;
 					if (this.addDataNextFrame.length > 0) {
@@ -208,10 +209,10 @@ export default class Tweener {
 			}
 		} else {
 			// complete and save result
-			this.result = { ...this.defaultFrom, ...from, ...result };
+			this.result = { ...this.result, ...to };
 			// remove queue
 			this.data.shift();
-			onComplete?.({ ...this.defaultFrom, ...to });
+			onComplete?.(this.result);
 
 			// check data. run next queue when data still has one
 			if (this.data.length > 0) {
