@@ -82,6 +82,8 @@ export default class Tweener {
 			this.data.push({ ...opt, onStart });
 		}
 
+		this.defaultFrom = opt.from;
+
 		return this;
 	}
 
@@ -186,12 +188,12 @@ export default class Tweener {
 
 		if (currentTime < duration) {
 			// keep render
-			onUpdate?.(result);
+			onUpdate?.({ ...this.defaultFrom, ...result });
 			if (this.enable) {
 				requestAnimationFrame(() => this.render());
 			} else {
 				// force stop
-				this.result = { ...from, ...result };
+				this.result = { ...this.defaultFrom, ...from, ...result };
 				if (this.clearNextFrame) {
 					this.clearNextFrame = false;
 					if (this.addDataNextFrame.length > 0) {
@@ -206,7 +208,7 @@ export default class Tweener {
 			}
 		} else {
 			// complete and save result
-			this.result = { ...from, ...result };
+			this.result = { ...this.defaultFrom, ...from, ...result };
 			// remove queue
 			this.data.shift();
 			onComplete?.(to);

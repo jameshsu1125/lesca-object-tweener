@@ -18,7 +18,7 @@ const onUpdate = (data) => {
 };
 
 const tween = new Tweener({
-	from: { top: 0, left: 0 },
+	from: { top: 0, left: 0, width: 100 },
 	to: { top: 500, left: 500 },
 	duration: 1000,
 	delay: 1000,
@@ -27,7 +27,7 @@ const tween = new Tweener({
 }).play();
 
 tween.add({
-	to: { left: 250, top: 250 },
+	to: { left: 250, top: 250, width: 200 },
 	easing: Bezier.easeInOutQuint,
 	duration: 1000,
 	delay: 1000,
