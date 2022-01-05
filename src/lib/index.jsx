@@ -211,7 +211,7 @@ export default class Tweener {
 			this.result = { ...this.defaultFrom, ...from, ...result };
 			// remove queue
 			this.data.shift();
-			onComplete?.(to);
+			onComplete?.({ ...this.defaultFrom, ...to });
 
 			// check data. run next queue when data still has one
 			if (this.data.length > 0) {
