@@ -17,40 +17,29 @@ const onUpdate = (data) => {
 	}
 };
 
+const click = { index: 1 };
+
 function Demo() {
 	useEffect(() => {
 		const tween = new Tweener({
 			from: { top: 0, left: 0, width: 100 },
 		});
 
-		tween
-			.add({
-				to: { left: 250, top: 100, width: 200 },
-				easing: Bezier.easeInOutQuint,
-				duration: 1000,
-				onStart: () => {
-					console.log('start45');
-				},
-				onUpdate: (e) => onUpdate(e),
-				onComplete: (e) => {
-					onUpdate(e);
-					[{ left: 300 }, { left: 350 }, { left: 400 }, { left: 500 }].forEach((e) => {
-						tween
-							.stop()
-							.clearQueue()
-							.add({
-								to: e,
-								duration: 1000,
-								onUpdate: (e) => onUpdate(e),
-								onComplete: (e) => {
-									onUpdate(e);
-								},
-							})
-							.play();
-					});
-				},
-			})
-			.play();
+		window.addEventListener('mousedown', () => {
+			const { index } = click;
+			const to = { left: index * 100 };
+			tween
+				.stop()
+				.clearQueue()
+				.add({
+					to,
+					duration: 1000,
+					onUpdate: (e) => onUpdate(e),
+					onComplete: (e) => onUpdate(e),
+				})
+				.play();
+			click.index += 1;
+		});
 	}, []);
 	return (
 		<div id='container'>

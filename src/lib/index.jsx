@@ -118,6 +118,7 @@ export default class Tweener {
 		this.data = [];
 		this.addDataNextFrame = [];
 		this.result = this.eachResult;
+		this.timestamp = new Date().getTime();
 		return this;
 	}
 
@@ -156,7 +157,7 @@ export default class Tweener {
 		if (!data) return;
 		const { from: nfrom, to, duration, delay, easing, onUpdate, onComplete, onStart } = data;
 
-		const from = nfrom || { ...this.defaultFrom, ...this.result };
+		const from = nfrom || this.result;
 
 		// calc easing time
 		const time = new Date().getTime() - this.timestamp;
