@@ -81,7 +81,7 @@ export default class Tweener {
 			if (opt.to) this.data.push({ ...opt, onStart });
 		}
 
-		this.result = opt.from;
+		this.eachResult = this.result = opt.from;
 
 		return this;
 	}
@@ -107,6 +107,7 @@ export default class Tweener {
 		if (this.clearNextFrame) {
 			this.addDataNextFrame.push(data);
 		}
+
 		this.data.push(data);
 
 		return this;
@@ -114,6 +115,9 @@ export default class Tweener {
 
 	clearQueue() {
 		if (this.data.length > 0) this.clearNextFrame = true;
+		this.data = [];
+		this.addDataNextFrame = [];
+		this.result = this.eachResult;
 		return this;
 	}
 
@@ -186,10 +190,10 @@ export default class Tweener {
 			result[key] = resultValue;
 		});
 
-		// console.log(from, to, result, this.result);
 		if (currentTime < duration) {
 			// keep render
-			onUpdate?.({ ...this.result, ...result });
+			this.eachResult = { ...this.result, ...result };
+			onUpdate?.(this.eachResult);
 			if (this.enable) {
 				requestAnimationFrame(() => this.render());
 			} else {
@@ -209,7 +213,7 @@ export default class Tweener {
 			}
 		} else {
 			// complete and save result
-			this.result = { ...this.result, ...to };
+			this.result = this.eachResult = { ...this.result, ...to };
 			// remove queue
 			this.data.shift();
 			onComplete?.(this.result);

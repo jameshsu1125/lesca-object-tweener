@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { render } from 'react-dom';
 import Tweener, { Bezier } from './../lib/index';
 
@@ -17,47 +17,41 @@ const onUpdate = (data) => {
 	}
 };
 
-const tween = new Tweener({
-	from: { top: 100, left: 0, width: 100 },
-});
-
-tween
-	.add({
-		to: { left: 250 },
-		easing: Bezier.easeInOutQuint,
-		duration: 1000,
-		delay: 1000,
-		onStart: () => {
-			console.log('start2');
-		},
-		onUpdate: (e) => onUpdate(e),
-		onComplete: (e) => onUpdate(e),
-	})
-	.play();
-
-const stop = () => {
-	tween.stop();
-};
-
-setTimeout(() => {
-	tween
-		.stop()
-		.clearQueue()
-		.add({
-			to: { width: 200 },
-			easing: Bezier.easeInOutQuint,
-			duration: 1000,
-			delay: 1000,
-			onStart: () => {
-				console.log('start3');
-			},
-			onUpdate: (e) => onUpdate(e),
-			onComplete: (e) => onUpdate(e),
-		})
-		.play();
-}, 5500);
-
 function Demo() {
+	useEffect(() => {
+		const tween = new Tweener({
+			from: { top: 0, left: 0, width: 100 },
+		});
+
+		tween
+			.add({
+				to: { left: 250, top: 100, width: 200 },
+				easing: Bezier.easeInOutQuint,
+				duration: 1000,
+				onStart: () => {
+					console.log('start45');
+				},
+				onUpdate: (e) => onUpdate(e),
+				onComplete: (e) => {
+					onUpdate(e);
+					[{ left: 300 }, { left: 350 }, { left: 400 }, { left: 500 }].forEach((e) => {
+						tween
+							.stop()
+							.clearQueue()
+							.add({
+								to: e,
+								duration: 1000,
+								onUpdate: (e) => onUpdate(e),
+								onComplete: (e) => {
+									onUpdate(e);
+								},
+							})
+							.play();
+					});
+				},
+			})
+			.play();
+	}, []);
 	return (
 		<div id='container'>
 			<div id='text'></div>
