@@ -48,25 +48,64 @@ export const Bezier = {
   easeInOutBack: [0.68, -0.55, 0.265, 1.55],
 };
 
-const defaultOptions = {
-  from: false,
-  to: false,
+type OnStart = {
+  is: boolean;
+  method: Function | undefined;
+};
+
+type Option = {
+  from?: object;
+  to: object;
+  duration?: number;
+  delay?: number;
+  easing?: number[];
+  onStart?: Function;
+  onUpdate?: Function;
+  onComplete?: Function;
+};
+
+type AllOption = {
+  from: object;
+  to: object;
+  duration: number;
+  delay: number;
+  easing: number[];
+  onStart: OnStart | Function;
+  onUpdate: Function;
+  onComplete: Function;
+};
+
+const defaultOptions: AllOption = {
+  from: {},
+  to: {},
   duration: 1000,
   delay: 0,
   easing: Bezier.easeOutQuart,
-  onUpdate: void 0,
-  onComplete: void 0,
-  onStart: false,
+  onStart: {
+    is: false,
+    method: () => {},
+  },
+  onUpdate: () => {},
+  onComplete: () => {},
 };
 
 export default class Tweener {
+  public enable: boolean;
+  public data: AllOption[];
+  public playing: boolean;
+  private clearNextFrame: boolean;
+  private playNextFrame: boolean;
+  private addDataNextFrame: AllOption[];
+  private eachResult: object | undefined;
+  public result: object | undefined;
+  private timestamp: number;
   /**
    * { from, to, duration, delay, easing, onUpdate, onComplete, onStart }
    * @param {object} options { from, to, duration, delay, easing, onUpdate, onComplete, onStart }
    * @returns
    */
-  constructor(options = defaultOptions) {
-    const opt = { ...defaultOptions, ...options };
+  constructor(options: Option) {
+    const opt: AllOption = { ...defaultOptions, ...options };
 
     this.enable = true;
     this.data = [];
@@ -74,9 +113,10 @@ export default class Tweener {
     this.clearNextFrame = false;
     this.playNextFrame = false;
     this.addDataNextFrame = [];
+    this.timestamp = 0;
 
     if (JSON.stringify(opt) !== JSON.stringify(defaultOptions)) {
-      const method = opt.onStart || function () {};
+      const method = opt.onStart instanceof Function ? opt.onStart : opt.onStart.method;
       const onStart = { method, is: false };
       if (opt.to) this.data.push({ ...opt, onStart });
     }
@@ -86,11 +126,12 @@ export default class Tweener {
     return this;
   }
 
-  add(options = defaultOptions) {
+  add(options: Option) {
     const opt = { ...defaultOptions, ...options };
+
     const { from, to, duration, delay, easing, onUpdate, onComplete, onStart } = opt;
 
-    const data = {
+    const data: AllOption = {
       from,
       to,
       duration,
@@ -98,11 +139,14 @@ export default class Tweener {
       easing,
       onUpdate,
       onComplete,
+      onStart: onStart || { method: () => {}, is: true },
     };
 
-    if (!onStart) {
+    if (!options.onStart) {
       data.onStart = { method: () => {}, is: true };
-    } else data.onStart = { method: onStart, is: false };
+    } else {
+      data.onStart = { method: onStart instanceof Function ? onStart : onStart.method, is: false };
+    }
 
     if (this.clearNextFrame) {
       this.addDataNextFrame.push(data);
@@ -161,7 +205,7 @@ export default class Tweener {
 
     // calc easing time
     const time = new Date().getTime() - this.timestamp;
-    const currentTime = time - delay;
+    const currentTime = time - (delay || 0);
     const [x1, y1, x2, y2] = easing;
     const cubicBezier = BezierEasing(x1, y1, x2, y2);
     const timePercent = currentTime / duration;
@@ -173,11 +217,16 @@ export default class Tweener {
     }
 
     // onStart
+
     if (Object.keys(onStart).length !== 0) {
-      const { method, is } = onStart;
-      if (!is && method) {
-        onStart.is = true;
-        method?.(from);
+      if (onStart instanceof Function) {
+        onStart?.();
+      } else {
+        const { method, is } = onStart;
+        if (!is && method) {
+          onStart.is = true;
+          method?.(from);
+        }
       }
     }
 
@@ -185,7 +234,7 @@ export default class Tweener {
     let result = {};
     Object.entries(to).forEach((e) => {
       const [key, value] = e;
-      const fromValue = from[key];
+      const fromValue = Object.entries(from).filter((e) => e[0] === key)[0][1];
       if (fromValue === undefined) return;
       const resultValue = fromValue + (value - fromValue) * cubicBezier(timePercent);
       result[key] = resultValue;

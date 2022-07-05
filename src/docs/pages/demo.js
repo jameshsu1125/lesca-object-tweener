@@ -17,6 +17,9 @@ const Demo = () => {
     tweener
       .add({
         ...fromTo,
+        onStart: (e) => {
+          console.log(e);
+        },
         onUpdate: (e) => {
           setState(e);
         },
