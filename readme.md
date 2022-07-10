@@ -93,7 +93,6 @@ tweener.play(); // Need to run play when new constructor without any params
 
 ### Features
 
-- TypeScript
 - maintain if necessary
 
 # references
