@@ -34,7 +34,7 @@ declare type OnStart = {
 };
 declare type Option = {
     from?: object;
-    to: object;
+    to?: object;
     duration?: number;
     delay?: number;
     easing?: number[];
