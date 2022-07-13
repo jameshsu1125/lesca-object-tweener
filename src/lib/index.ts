@@ -157,7 +157,6 @@ export default class Tweener {
   }
 
   clearQueue() {
-    console.log(this.clearNextFrame, this.data);
     if (this.data.length > 0) this.clearNextFrame = true;
 
     this.data = [];
