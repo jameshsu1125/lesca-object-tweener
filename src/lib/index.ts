@@ -118,11 +118,10 @@ export default class Tweener {
     if (JSON.stringify(opt) !== JSON.stringify(defaultOptions)) {
       const method = opt.onStart instanceof Function ? opt.onStart : opt.onStart.method;
       const onStart = { method, is: false };
-      if (opt.to) this.data.push({ ...opt, onStart });
+      if (Object.keys(opt.to).length > 0) this.data.push({ ...opt, onStart });
     }
 
     this.eachResult = this.result = opt.from;
-
     return this;
   }
 
@@ -158,7 +157,9 @@ export default class Tweener {
   }
 
   clearQueue() {
+    console.log(this.clearNextFrame, this.data);
     if (this.data.length > 0) this.clearNextFrame = true;
+
     this.data = [];
     this.addDataNextFrame = [];
     this.result = this.eachResult;

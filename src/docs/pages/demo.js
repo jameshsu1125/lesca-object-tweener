@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, TextField, Box } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import Tweener from '../../lib/';
+import Tweener from '../../lib';
 
 const Demo = () => {
   const [state, setState] = useState({ x: 0, y: 0 });
@@ -15,6 +15,8 @@ const Demo = () => {
   useEffect(() => {
     if (index === 0) return;
     tweener
+      .stop()
+      .clearQueue()
       .add({
         ...fromTo,
         onStart: (e) => {
