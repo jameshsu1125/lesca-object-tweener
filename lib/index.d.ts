@@ -28,11 +28,11 @@ export declare const Bezier: {
     easeOutBack: number[];
     easeInOutBack: number[];
 };
-declare type OnStart = {
+type OnStart = {
     is: boolean;
     method: Function | undefined;
 };
-declare type Option = {
+type Option = {
     from?: object;
     to?: object;
     duration?: number;
@@ -42,7 +42,7 @@ declare type Option = {
     onUpdate?: Function;
     onComplete?: Function;
 };
-declare type AllOption = {
+type AllOption = {
     from: object;
     to: object;
     duration: number;
