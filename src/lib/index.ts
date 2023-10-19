@@ -199,9 +199,8 @@ export default class Tweener {
     // get data form class
     const [data] = this.data;
     if (!data) return;
-    const { from: nfrom, to, duration, delay, easing, onUpdate, onComplete, onStart } = data;
-
-    const from = nfrom || this.result;
+    const { from: currentFrom, to, duration, delay, easing, onUpdate, onComplete, onStart } = data;
+    const from = currentFrom || this.result;
 
     // calc easing time
     const time = new Date().getTime() - this.timestamp;
