@@ -233,7 +233,9 @@ export default class Tweener {
     let result: Record<string, number> = {};
     Object.entries(to).forEach((e) => {
       const [key, value] = e;
-      const fromValue = Object.entries(from).filter((e) => e[0] === key)[0][1];
+      const fromMatchValue = Object.entries(from).filter((e) => e[0] === key);
+      const fromValue = fromMatchValue.length > 0 ? fromMatchValue[0][1] : null;
+
       if (fromValue === undefined) return;
       const resultValue = fromValue + (value - fromValue) * cubicBezier(timePercent);
       result[key] = resultValue;

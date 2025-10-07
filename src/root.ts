@@ -1,10 +1,19 @@
-import YourClass from '.';
+import Tweener from '.';
 
 const createApp = () => {
   return new Promise<HTMLElement>((resolve) => {
     const app = document.createElement('div');
-    app.innerHTML = 'Hello, World!';
-    console.log(YourClass);
+    app.classList.add('w-10', 'h-10', 'bg-blue-500');
+    console.log(Tweener);
+    const a = new Tweener({
+      from: { x: 0, y: 0 },
+      to: { x: 300, y: 300, t: 10 },
+      duration: 2000,
+      onUpdate: (data: any) => {
+        app.style.transform = `translate(${data.x}px, ${data.y}px)`;
+      },
+    });
+    a.play();
     resolve(app);
   });
 };
