@@ -231,14 +231,25 @@ export default class Tweener {
 
     // get value by easing time
     let result: Record<string, number> = {};
+    let undefinedValue: string[] = [];
+
     Object.entries(to).forEach((e) => {
       const [key, value] = e;
       const fromMatchValue = Object.entries(from).filter((e) => e[0] === key);
+      if (fromMatchValue.length === 0) {
+        undefinedValue.push(key);
+        return;
+      }
       const fromValue = fromMatchValue.length > 0 ? fromMatchValue[0][1] : null;
 
       if (fromValue === undefined) return;
       const resultValue = fromValue + (value - fromValue) * cubicBezier(timePercent);
       result[key] = resultValue;
+    });
+
+    // if from value is undefined, set to value directly
+    undefinedValue.forEach((key) => {
+      console.warn(`[Tweener] property "${key}" is undefined.`);
     });
 
     if (currentTime < duration) {
