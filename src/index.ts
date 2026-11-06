@@ -48,6 +48,25 @@ const Bezier = {
   inOutBack: [0.68, -0.55, 0.265, 1.55],
 };
 
+type EasingFn = (t: number) => number;
+type Easing = number[] | EasingFn;
+
+const TAU = (2 * Math.PI) / 3;
+const TAU_IO = (2 * Math.PI) / 4.5;
+
+/** Function-based easings that cubic-bezier cannot express (multiple oscillations). */
+const Elastic: Record<'inElastic' | 'outElastic' | 'inOutElastic', EasingFn> = {
+  inElastic: (t) =>
+    t === 0 || t === 1 ? t : -Math.pow(2, 10 * t - 10) * Math.sin((t * 10 - 10.75) * TAU),
+  outElastic: (t) =>
+    t === 0 || t === 1 ? t : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * TAU) + 1,
+  inOutElastic: (t) => {
+    if (t === 0 || t === 1) return t;
+    const s = Math.sin((20 * t - 11.125) * TAU_IO);
+    return t < 0.5 ? -(Math.pow(2, 20 * t - 10) * s) / 2 : (Math.pow(2, -20 * t + 10) * s) / 2 + 1;
+  },
+};
+
 type OnStart = {
   is: boolean;
   method: Function | undefined;
@@ -58,7 +77,7 @@ type Option = {
   to?: object;
   duration?: number;
   delay?: number;
-  easing?: number[];
+  easing?: Easing;
   onStart?: Function;
   onUpdate?: Function;
   onComplete?: Function;
@@ -69,7 +88,7 @@ type AllOption = {
   to: object;
   duration: number;
   delay: number;
-  easing: number[];
+  easing: Easing;
   onStart: OnStart | Function;
   onUpdate: Function;
   onComplete: Function;
@@ -205,8 +224,10 @@ export default class Tweener {
     // calc easing time
     const time = new Date().getTime() - this.timestamp;
     const currentTime = time - (delay || 0);
-    const [x1, y1, x2, y2] = easing;
-    const cubicBezier = BezierEasing(x1, y1, x2, y2);
+    const ease: EasingFn =
+      typeof easing === 'function'
+        ? easing
+        : BezierEasing(...(easing as [number, number, number, number]));
     const timePercent = currentTime / duration;
 
     // wait for delay
@@ -243,7 +264,7 @@ export default class Tweener {
       const fromValue = fromMatchValue.length > 0 ? fromMatchValue[0][1] : null;
 
       if (fromValue === undefined) return;
-      const resultValue = fromValue + (value - fromValue) * cubicBezier(timePercent);
+      const resultValue = fromValue + (value - fromValue) * ease(timePercent);
       result[key] = resultValue;
     });
 
@@ -296,3 +317,6 @@ export default class Tweener {
     this.timestamp = new Date().getTime();
   }
 }
+
+export { Bezier, Elastic };
+export type { Easing, EasingFn };
