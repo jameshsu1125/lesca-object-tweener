@@ -42,7 +42,12 @@ export default defineConfig({
     ],
     plugins: [
         cssInjectedByJsPlugin(),
-        dtsPlugin({ insertTypesEntry: true, outDirs: "../lib" }),
+        dtsPlugin({
+            insertTypesEntry: true,
+            outDirs: "../lib",
+            include: ["**/*.ts"],
+            exclude: ["root.ts"],
+        }),
     ],
     server: {
         open: true,
