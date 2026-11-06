@@ -43,7 +43,7 @@ export default defineConfig({
   ],
   plugins: [
     cssInjectedByJsPlugin(),
-    dtsPlugin({ insertTypesEntry: true, outDir: "../lib" }),
+    dtsPlugin({ insertTypesEntry: true, outDirs: "../lib" }),
   ],
   server: {
     open: true,
