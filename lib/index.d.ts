@@ -32,29 +32,31 @@ type EasingFn = (t: number) => number;
 type Easing = number[] | EasingFn;
 /** Function-based easings that cubic-bezier cannot express (multiple oscillations). */
 declare const Elastic: Record<'inElastic' | 'outElastic' | 'inOutElastic', EasingFn>;
+type Values = Record<string, number>;
+type Callback = (values: Values) => void;
 type OnStart = {
     is: boolean;
-    method: Function | undefined;
+    method: Callback | undefined;
 };
 type Option = {
-    from?: object;
-    to?: object;
+    from?: Values;
+    to?: Values;
     duration?: number;
     delay?: number;
     easing?: Easing;
-    onStart?: Function;
-    onUpdate?: Function;
-    onComplete?: Function;
+    onStart?: Callback;
+    onUpdate?: Callback;
+    onComplete?: Callback;
 };
 type AllOption = {
-    from: object;
-    to: object;
+    from: Values;
+    to: Values;
     duration: number;
     delay: number;
     easing: Easing;
-    onStart: OnStart | Function;
-    onUpdate: Function;
-    onComplete: Function;
+    onStart: OnStart | Callback;
+    onUpdate: Callback;
+    onComplete: Callback;
 };
 export default class Tweener {
     enable: boolean;
@@ -64,7 +66,7 @@ export default class Tweener {
     private playNextFrame;
     private addDataNextFrame;
     private eachResult;
-    result: object | undefined;
+    result: Values | undefined;
     private timestamp;
     /**
      * { from, to, duration, delay, easing, onUpdate, onComplete, onStart }

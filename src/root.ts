@@ -9,7 +9,7 @@ const createApp = () => {
       from: { x: 0, y: 0 },
       to: { x: 300, y: 300, t: 10 },
       duration: 2000,
-      onUpdate: (data: any) => {
+      onUpdate: (data: Record<string, number>) => {
         app.style.transform = `translate(${data.x}px, ${data.y}px)`;
       },
     });

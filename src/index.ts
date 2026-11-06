@@ -67,31 +67,34 @@ const Elastic: Record<'inElastic' | 'outElastic' | 'inOutElastic', EasingFn> = {
   },
 };
 
+type Values = Record<string, number>;
+type Callback = (values: Values) => void;
+
 type OnStart = {
   is: boolean;
-  method: Function | undefined;
+  method: Callback | undefined;
 };
 
 type Option = {
-  from?: object;
-  to?: object;
+  from?: Values;
+  to?: Values;
   duration?: number;
   delay?: number;
   easing?: Easing;
-  onStart?: Function;
-  onUpdate?: Function;
-  onComplete?: Function;
+  onStart?: Callback;
+  onUpdate?: Callback;
+  onComplete?: Callback;
 };
 
 type AllOption = {
-  from: object;
-  to: object;
+  from: Values;
+  to: Values;
   duration: number;
   delay: number;
   easing: Easing;
-  onStart: OnStart | Function;
-  onUpdate: Function;
-  onComplete: Function;
+  onStart: OnStart | Callback;
+  onUpdate: Callback;
+  onComplete: Callback;
 };
 
 const defaultOptions: AllOption = {
@@ -115,8 +118,8 @@ export default class Tweener {
   private clearNextFrame: boolean;
   private playNextFrame: boolean;
   private addDataNextFrame: AllOption[];
-  private eachResult: object | undefined;
-  public result: object | undefined;
+  private eachResult: Values | undefined;
+  public result: Values | undefined;
   private timestamp: number;
   /**
    * { from, to, duration, delay, easing, onUpdate, onComplete, onStart }
@@ -240,7 +243,7 @@ export default class Tweener {
 
     if (Object.keys(onStart).length !== 0) {
       if (onStart instanceof Function) {
-        onStart?.();
+        onStart(from as Values);
       } else {
         const { method, is } = onStart;
         if (!is && method) {
@@ -251,8 +254,8 @@ export default class Tweener {
     }
 
     // get value by easing time
-    let result: Record<string, number> = {};
-    let undefinedValue: string[] = [];
+    const result: Record<string, number> = {};
+    const undefinedValue: string[] = [];
 
     Object.entries(to).forEach((e) => {
       const [key, value] = e;
@@ -261,9 +264,7 @@ export default class Tweener {
         undefinedValue.push(key);
         return;
       }
-      const fromValue = fromMatchValue.length > 0 ? fromMatchValue[0][1] : null;
-
-      if (fromValue === undefined) return;
+      const fromValue = fromMatchValue[0][1];
       const resultValue = fromValue + (value - fromValue) * ease(timePercent);
       result[key] = resultValue;
     });
